@@ -34,6 +34,11 @@ add_custom_command(TARGET RLUtilitiesCPPExampleBot POST_BUILD
         "${PROJECT_SOURCE_DIR}/port.cfg"
         ${PROJECT_SOURCE_DIR}/rlbot)
 
-# Copy assets to executable folder and release folder
-file(COPY ${PROJECT_SOURCE_DIR}/RLUtilities/assets DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+# Copy assets to executable folder
+add_custom_command(TARGET RLUtilitiesCPPExampleBot POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${PROJECT_SOURCE_DIR}/RLUtilities/assets"
+        $<TARGET_FILE_DIR:RLUtilitiesCPPExampleBot>/assets)
+
+# Copy assets to release folder
 file(COPY ${PROJECT_SOURCE_DIR}/RLUtilities/assets DESTINATION ${PROJECT_SOURCE_DIR}/rlbot)
