@@ -7,3 +7,9 @@ cmake_install.cmake
 install_manifest.txt
 compile_commands.json
 CTestTestfile.cmake
+.idea
+.vscode
+cmake-build-*
+build
+rlbot/__pycache__
+rlbot/assets
