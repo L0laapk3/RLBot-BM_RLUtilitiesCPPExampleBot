@@ -3,5 +3,5 @@
 	url = https://github.com/kipje13/RLBotCPP.git
 [submodule "RLUtilities"]
 	path = RLUtilities
-	url = git@github.com:samuelpmish/RLUtilities.git
+	url = https://github.com/samuelpmish/RLUtilities.git
 	branch = develop
