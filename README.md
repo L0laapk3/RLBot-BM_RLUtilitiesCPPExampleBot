@@ -3,17 +3,18 @@
 A ready to use template of a C++ Rocket League bot using [RLBotCPP](https://github.com/kipje13/RLBotCPP) and [RLUtilities](https://github.com/samuelpmish/RLUtilities/).
 
 ## Prerequisites
-- RLBotGUI
-- CMake 3.8 and higher
+- [RLBotGUI](http://rlbot.org/)
+- [CMake](https://cmake.org/download/) 3.8 and higher
 - Compiler with c++17 support
   - GCC 8.1 and higher (9.1 if using mingw)
   - Visual Studio 2017 and higher
   - Clang 7 and higher (not tested)
 
 ## How to use:
-- Clone this repository by running: `git clone https://github.com/Darxeal/RLUtilitiesCPPExampleBot.git --recursive`
-- Make sure you have [CMake](https://cmake.org/download/).
-- Open RLBotGUI, click Add -> Load Folder and select your cloned folder and start a match with the example bot(s).
+- Clone this repository by running:
+
+  `git clone https://github.com/Darxeal/RLUtilitiesCPPExampleBot.git --recursive`
+- Open RLBotGUI, add the cloned folder (Add -> Load Folder) and start a match with the example bot(s).
 ### Visual Studio
 - Navigate to the folder and run `cmake -A x64 -B build .`
 - Go to the generated `build` folder and open the `.sln` file with Visual Studio.
