@@ -103,6 +103,7 @@ rlbot::Controller inputToController(const Input &input) {
     rlbot::Controller controller;
     controller.throttle = input.throttle;
     controller.steer = input.steer;
+    controller.boost = input.boost;
     controller.handbrake = input.handbrake;
     controller.jump = input.jump;
     controller.pitch = input.pitch;
