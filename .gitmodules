@@ -1,7 +1,7 @@
-[submodule "RLBotCPP"]
-	path = RLBotCPP
-	url = https://github.com/kipje13/RLBotCPP.git
 [submodule "RLUtilities"]
 	path = RLUtilities
 	url = https://github.com/samuelpmish/RLUtilities.git
 	branch = develop
+[submodule "RLBotBMCPP"]
+	path = RLBotBMCPP
+	url = git@github.com:L0laapk3/RLBot-BM_CPP.git
