@@ -4,12 +4,12 @@ project(RLBotBM-RLUtilitiesCPPExampleBot LANGUAGES CXX)
 add_subdirectory(RLBotBMCPP)
 add_subdirectory(RLUtilities)
 
-file(GLOB_RECURSE sources ${PROJECT_SOURCE_DIR}/src/*.cc ${PROJECT_SOURCE_DIR}/inc/*.h)
+file(GLOB_RECURSE sources ${PROJECT_SOURCE_DIR}/src/*.cc ${PROJECT_SOURCE_DIR}/RLBotBMCPP/RLBotBMLib/src/shared/*.cpp)
 
 add_executable(RLBotBM-RLUtilitiesCPPExampleBot ${sources})
 target_include_directories(RLBotBM-RLUtilitiesCPPExampleBot PUBLIC inc)
 
-target_include_directories(RLBotBM-RLUtilitiesCPPExampleBot PRIVATE RLBotBMCPP/inc RLBotBMCPP/RLBotCPP/inc RLBotBMCPP/RLBotCPP/lib/inc)
+target_include_directories(RLBotBM-RLUtilitiesCPPExampleBot PRIVATE RLBotBMCPP/inc RLBotBMCPP/lib/inc)
 target_include_directories(RLBotBM-RLUtilitiesCPPExampleBot PRIVATE RLUtilities/inc RLUtilities/inc/*)
 
 if (UNIX)
