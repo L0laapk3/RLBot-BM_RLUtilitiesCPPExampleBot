@@ -1,6 +1,6 @@
-# RLUtilities C++ Example Bot
+# RLUtilities C++ Example Bot - RLBotBM edition
 
-A ready to use template of a C++ Rocket League bot using [RLBotCPP](https://github.com/kipje13/RLBotCPP) and [RLUtilities](https://github.com/samuelpmish/RLUtilities/).
+A ready to use template of a C++ Rocket League bot using [RLBot-BM](https://github.com/L0laapk3/RLBot-BM_Lib) and [RLUtilities](https://github.com/samuelpmish/RLUtilities/).
 
 ## Prerequisites
 - [RLBotGUI](http://rlbot.org/)
