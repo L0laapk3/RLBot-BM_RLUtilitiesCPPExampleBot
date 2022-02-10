@@ -13,7 +13,7 @@ A ready to use template of a C++ Rocket League bot using [RLBot-BM](https://gith
 ## How to use:
 - Clone this repository by running:
 
-  `git clone https://github.com/Darxeal/RLUtilitiesCPPExampleBot.git --recursive`
+  `git clone https://github.com/L0laapk3/RLBotBM-RLUtilitiesCPPExampleBot.git --recursive`
 - Open RLBotGUI, add the cloned folder (Add -> Load Folder) and start a match with the example bot(s).
 ### Visual Studio
 - Navigate to the folder and run `cmake -A x64 -B build .`
