@@ -10,5 +10,5 @@ public:
 
     ~RLUtilitiesExampleBot();
 
-    rlbot::Controller GetOutput(rlbot::GameTickPacket packet) override;
+    RLBotBM::ControllerInput GetOutput(RLBotBM::GameState& state) override;
 };

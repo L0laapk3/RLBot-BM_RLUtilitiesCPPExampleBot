@@ -3,6 +3,18 @@
 #include <simulation/game.h>
 #include <rlbot/packets.h>
 
+vec3 vec3ToRLU(const RLBotBM::Shared::Vec3& v) {
+    return { v.x, v.y, v.z };
+}
+
+mat3 quatToRLU(const RLBotBM::Shared::Quat& q) {
+    return {
+		{ 2 * (q.x*q.x + q.y*q.y) - 1, 2 * (q.y*q.z - q.x*q.w), 2 * (q.y*q.w + q.x*q.z) },
+		{ 2 * (q.y*q.z + q.x*q.w), 2 * (q.x*q.x + q.y*q.y) - 1, 2 * (q.z*q.w - q.x*q.y) },
+		{ 2 * (q.y*q.w - q.x*q.z), 2 * (q.z*q.w + q.x*q.y), 2 * (q.x*q.x + q.z*q.z) - 1 },
+	};
+}
+
 vec3 flatVectorToVec3(const rlbot::flat::Vector3 *v) {
     return vec3{v->x(), v->y(), v->z()};
 }
@@ -31,72 +43,73 @@ void readFieldInfo(Game &game, const rlbot::FieldInfo &fieldInfo) {
     }
 }
 
-void readPacket(Game &game, const rlbot::GameTickPacket &packet) {
+void readState(Game &game, const RLBotBM::GameState& state) {
     // game info
-    game.time = packet->gameInfo()->secondsElapsed();
-    game.time_remaining = packet->gameInfo()->gameTimeRemaining();
-    game.gravity = {0.0f, 0.0f, packet->gameInfo()->worldGravityZ()};
+    game.time = ((float)state.tick) / 120.f;
+    game.time_remaining = 300.f - game.time; // todo
+    game.gravity = {0.0f, 0.0f, -650.f}; // todo
 
-    if (packet->gameInfo()->isMatchEnded()) {
-        game.state = GameState::Ended;
-    } else {
-        if (packet->gameInfo()->isRoundActive()) {
-            if (packet->gameInfo()->isKickoffPause()) {
-                game.state = GameState::Kickoff;
-            } else {
-                game.state = GameState::Active;
-            }
-        } else {
-            game.state = GameState::Inactive;
-        }
-    }
+ 	// todo
+    // if (packet->gameInfo()->isMatchEnded())
+    //     game.state = GameState::Ended;
+    // else {
+    //     if (packet->gameInfo()->isRoundActive()) {
+			if (state.balls[0].position.x == 0 && state.balls[0].position.z == 0)
+				game.state = GameState::Kickoff;
+			else
+				game.state = GameState::Active;
+    //     } else {
+    //         game.state = GameState::Inactive;
+    //     }
+    // }
 
     // cars
-    if (game.cars.size() != packet->players()->Length())
-        game.cars.resize(packet->players()->Length());
+    if (game.cars.size() != state.numCars)
+        game.cars.resize(state.numCars);
 
-    for (int i = 0; i < packet->players()->Length(); ++i) {
-        auto player = packet->players()->Get(i);
-        game.cars[i].position = flatVectorToVec3(player->physics()->location());
-        game.cars[i].velocity = flatVectorToVec3(player->physics()->velocity());
-        game.cars[i].angular_velocity = flatVectorToVec3(player->physics()->angularVelocity());
-        game.cars[i].orientation = flatRotatorToMat3(player->physics()->rotation());
+    for (int i = 0; i < state.numCars; ++i) {
+		auto& dest = game.cars[i];
+        auto& src = state.cars[i];
+        dest.position = vec3ToRLU(src.position);
+        dest.velocity = vec3ToRLU(src.velocity);
+        dest.angular_velocity = vec3ToRLU(src.angularVelocity);
+        dest.orientation = quatToRLU(src.orientation);
 
-        game.cars[i].boost = player->boost();
-        game.cars[i].jumped = player->jumped();
-        game.cars[i].double_jumped = player->doubleJumped();
-        game.cars[i].on_ground = player->hasWheelContact();
-        game.cars[i].supersonic = player->isSupersonic();
-        game.cars[i].demolished = player->isDemolished();
+        dest.boost = src.boost;
+        dest.jumped = src.jumped; // todo
+        dest.double_jumped = !src.hasFlip;
+        dest.on_ground = src.frontLeftWheelContact || src.frontRightWheelContact || src.backLeftWheelContact || src.backRightWheelContact;
+        dest.supersonic = src.superSonic;
+        dest.demolished = src.demolished;
 
-        game.cars[i].id = i;
-        game.cars[i].team = player->team();
+        dest.id = i;
+        dest.team = src.team;
 
-        game.cars[i].time = game.time;
+        dest.time = game.time;
 
-        game.cars[i].hitbox_widths[0] = player->hitbox()->length() * 0.5f;
-        game.cars[i].hitbox_widths[1] = player->hitbox()->width() * 0.5f;
-        game.cars[i].hitbox_widths[2] = player->hitbox()->height() * 0.5f;
+        dest.hitbox_widths = vec3ToRLU(src.hitbox) * 0.5f;
 
-        game.cars[i].hitbox_offset = flatVectorToVec3(player->hitboxOffset());
+        dest.hitbox_offset = vec3ToRLU(src.hitboxOffset);
     }
 
     // ball
-    game.ball.position = flatVectorToVec3(packet->ball()->physics()->location());
-    game.ball.velocity = flatVectorToVec3(packet->ball()->physics()->velocity());
-    game.ball.angular_velocity = flatVectorToVec3(packet->ball()->physics()->angularVelocity());
+	auto ball = state.balls[0];
+    game.ball.position = vec3ToRLU(ball.position);
+    game.ball.velocity = vec3ToRLU(ball.velocity);
+    game.ball.angular_velocity = vec3ToRLU(ball.angularVelocity);
     game.ball.time = game.time;
 
-    // boost pads
-    if (game.pads.size() != packet->boostPadStates()->Length()) {
-        std::cout << "Boost pad info mismatch. Make sure to call readFieldInfo before readPacket!" << std::endl;
-    } else {
-        for (int i = 0; i < game.pads.size(); ++i) {
-            auto boostPad = packet->boostPadStates()->Get(i);
-            game.pads[i].state = boostPad->isActive() ? BoostPadState::Available : BoostPadState::Unavailable;
-            game.pads[i].timer = boostPad->timer();
-        }
-    }
+	// todo
+    // // boost pads
+    // if (game.pads.size() != packet->boostPadStates()->Length()) {
+    //     std::cout << "Boost pad info mismatch. Make sure to call readFieldInfo before readPacket!" << std::endl;
+    // } else {
+    //     for (int i = 0; i < game.pads.size(); ++i) {
+    //         auto boostPad = packet->boostPadStates()->Get(i);
+    //         game.pads[i].state = boostPad->isActive() ? BoostPadState::Available : BoostPadState::Unavailable;
+    //         game.pads[i].timer = boostPad->timer();
+    //     }
+    // }
 }
 
 rlbot::Controller inputToController(const Input &input) {

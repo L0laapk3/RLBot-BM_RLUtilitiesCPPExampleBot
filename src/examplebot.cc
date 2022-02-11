@@ -36,8 +36,8 @@ RLUtilitiesExampleBot::~RLUtilitiesExampleBot() {
     // Free your allocated memory here.
 }
 
-rlbot::Controller RLUtilitiesExampleBot::GetOutput(rlbot::GameTickPacket packet) {
-    readPacket(game, packet);
+RLBotBM::ControllerInput RLUtilitiesExampleBot::GetOutput(RLBotBM::GameState& state) {
+    readState(game, state);
 
     // Rendering and ball prediction example
     {
