@@ -9,9 +9,9 @@ vec3 vec3ToRLU(const RLBotBM::Shared::Vec3& v) {
 
 mat3 quatToRLU(const RLBotBM::Shared::Quat& q) {
     return {
-		{ 2 * (q.x*q.x + q.y*q.y) - 1, 2 * (q.y*q.z - q.x*q.w), 2 * (q.y*q.w + q.x*q.z) },
-		{ 2 * (q.y*q.z + q.x*q.w), 2 * (q.x*q.x + q.y*q.y) - 1, 2 * (q.z*q.w - q.x*q.y) },
-		{ 2 * (q.y*q.w - q.x*q.z), 2 * (q.z*q.w + q.x*q.y), 2 * (q.x*q.x + q.z*q.z) - 1 },
+		{ 1 - 2 * (q.y * q.y + q.z * q.z), 2 * (q.x * q.y - q.w * q.z), 2 * (q.x * q.z + q.w * q.y) },
+		{ 2 * (q.x * q.y + q.w * q.z), 1 - 2 * (q.x * q.x + q.z * q.z), 2 * (q.y * q.z - q.w * q.x) },
+		{ 2 * (q.x * q.z - q.w * q.y), 2 * (q.y * q.z + q.w * q.x), 1 - 2 * (q.x * q.x + q.y * q.y) }
 	};
 }
 
