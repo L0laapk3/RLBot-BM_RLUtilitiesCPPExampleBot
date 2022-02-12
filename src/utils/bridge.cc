@@ -49,19 +49,16 @@ void readState(Game &game, const RLBotBM::GameState& state) {
     game.time_remaining = 300.f - game.time; // todo
     game.gravity = {0.0f, 0.0f, -650.f}; // todo
 
- 	// todo
-    // if (packet->gameInfo()->isMatchEnded())
-    //     game.state = GameState::Ended;
-    // else {
-    //     if (packet->gameInfo()->isRoundActive()) {
-			if (state.balls[0].position.x == 0 && state.balls[0].position.z == 0)
-				game.state = GameState::Kickoff;
-			else
-				game.state = GameState::Active;
-    //     } else {
-    //         game.state = GameState::Inactive;
-    //     }
-    // }
+    if (state.matchEnded)
+        game.state = GameState::Ended;
+    else if (state.roundActive) {
+		if (state.balls[0].position.x == 0 && state.balls[0].position.z == 0)
+			game.state = GameState::Kickoff;
+		else
+			game.state = GameState::Active;
+	} else {
+		game.state = GameState::Inactive;
+	}
 
     // cars
     if (game.cars.size() != state.numCars)
@@ -87,7 +84,7 @@ void readState(Game &game, const RLBotBM::GameState& state) {
 
         dest.time = game.time;
 
-        dest.hitbox_widths = vec3ToRLU(src.hitbox) * 0.5f;
+        dest.hitbox_widths = vec3ToRLU(src.hitbox);
 
         dest.hitbox_offset = vec3ToRLU(src.hitboxOffset);
     }

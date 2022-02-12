@@ -36,11 +36,16 @@ RLUtilitiesExampleBot::~RLUtilitiesExampleBot() {
     // Free your allocated memory here.
 }
 
+
+int lastTick = 0;
 RLBotBM::ControllerInput RLUtilitiesExampleBot::GetOutput(RLBotBM::GameState& state) {
     readState(game, state);
 
+
     // Rendering and ball prediction example
-    {
+    
+	if (state.tick != lastTick) {
+		lastTick = state.tick;
         // This renderer will build and send the packet once it goes out of scope.
         RLURenderer renderer(std::to_string(index)); // Use index as the group name so it differs across instances
 
@@ -50,7 +55,7 @@ RLBotBM::ControllerInput RLUtilitiesExampleBot::GetOutput(RLBotBM::GameState& st
         // Predict the ball for 2 seconds and render the predicted positions
         std::vector<vec3> points;
         Ball copy = game.ball;
-        while (copy.time < game.time + 2.0f) {
+        while (copy.time < game.time + 4.f) {
             copy.step(1.f / 120.f);
             points.push_back(copy.position);
         }
