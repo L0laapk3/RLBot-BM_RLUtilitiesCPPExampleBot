@@ -37,30 +37,26 @@ RLUtilitiesExampleBot::~RLUtilitiesExampleBot() {
 }
 
 
-int lastTick = 0;
 RLBotBM::ControllerInput RLUtilitiesExampleBot::GetOutput(RLBotBM::GameState& state) {
     readState(game, state);
 
 
     // Rendering and ball prediction example
     
-	if (state.tick != lastTick) {
-		lastTick = state.tick;
-        // This renderer will build and send the packet once it goes out of scope.
-        RLURenderer renderer(std::to_string(index)); // Use index as the group name so it differs across instances
+	// This renderer will build and send the packet once it goes out of scope.
+	RLURenderer renderer(std::to_string(index)); // Use index as the group name so it differs across instances
 
-        renderer.DrawString2D("Hello world!", rlbot::Color::green, {10, 10}, 4, 4);
-        renderer.DrawOBB(rlbot::Color::green, game.cars[index].hitbox()); // Render car hitbox
+	renderer.DrawString2D("Hello world!", rlbot::Color::green, {10, 10}, 4, 4);
+	renderer.DrawOBB(rlbot::Color::green, game.cars[index].hitbox()); // Render car hitbox
 
-        // Predict the ball for 2 seconds and render the predicted positions
-        std::vector<vec3> points;
-        Ball copy = game.ball;
-        while (copy.time < game.time + 4.f) {
-            copy.step(1.f / 120.f);
-            points.push_back(copy.position);
-        }
-        renderer.DrawPolyLine3D(rlbot::Color::red, points);
-    }
+	// Predict the ball for 2 seconds and render the predicted positions
+	std::vector<vec3> points;
+	Ball copy = game.ball;
+	while (copy.time < game.time + 4.f) {
+		copy.step(1.f / 120.f);
+		points.push_back(copy.position);
+	}
+	renderer.DrawPolyLine3D(rlbot::Color::red, points);
 
     // Drive towards the ball
     Drive drive(game.cars[index]);
