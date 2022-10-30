@@ -2,6 +2,6 @@
 	path = RLUtilities
 	url = https://github.com/samuelpmish/RLUtilities.git
 	branch = develop
-[submodule "RLBotBMCPP"]
-	path = RLBotBMCPP
+[submodule "RLBot-BM_CPP"]
+	path = RLBot-BM_CPP
 	url = git@github.com:L0laapk3/RLBot-BM_CPP.git
