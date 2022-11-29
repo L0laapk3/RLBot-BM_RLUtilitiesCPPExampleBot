@@ -3,11 +3,11 @@
 #include <simulation/game.h>
 #include <rlbot/packets.h>
 
-vec3 vec3ToRLU(const RLBotBM::Shared::Vec3& v) {
+vec3 vec3ToRLU(const RLBotBM::Vec3& v) {
     return { v.x, v.y, v.z };
 }
 
-mat3 quatToRLU(const RLBotBM::Shared::Quat& q) {
+mat3 quatToRLU(const RLBotBM::Quat& q) {
     return {
 		{ 1 - 2 * (q.y * q.y + q.z * q.z), 2 * (q.x * q.y - q.w * q.z), 2 * (q.x * q.z + q.w * q.y) },
 		{ 2 * (q.x * q.y + q.w * q.z), 1 - 2 * (q.x * q.x + q.z * q.z), 2 * (q.y * q.z - q.w * q.x) },
