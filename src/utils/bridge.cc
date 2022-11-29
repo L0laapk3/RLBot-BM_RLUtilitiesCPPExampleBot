@@ -73,8 +73,8 @@ void readState(Game &game, const RLBotBM::GameState& state) {
         dest.orientation = quatToRLU(src.orientation);
 
         dest.boost = src.boost;
-        dest.jumped = src.jumped; // todo
-        dest.double_jumped = !src.hasFlip;
+        dest.jumped = src.jumped;
+        dest.double_jumped = src.flipped;
         dest.on_ground = src.wheels[0].contact && src.wheels[1].contact && src.wheels[2].contact && src.wheels[3].contact;
         dest.supersonic = src.superSonic;
         dest.demolished = src.demolished;

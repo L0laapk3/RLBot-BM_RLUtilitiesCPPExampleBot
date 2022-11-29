@@ -41,7 +41,7 @@ float lastCharge = -1.f;
 RLBotBM::ControllerInput RLUtilitiesExampleBot::GetOutput(RLBotBM::GameState& state) {
     readState(game, state);
 
-	if (state.dropShot.isDropShot) {
+	if (state.isDropShot) {
 		if (lastCharge != state.dropShot.ballCharge) {
 			auto& tiles = state.dropShot.tileDamage;
 
