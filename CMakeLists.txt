@@ -12,7 +12,6 @@ file(GLOB_RECURSE sources ${PROJECT_SOURCE_DIR}/src/*.cc ${RLBOT-BM_DIR}/src/sha
 add_executable(${PROJECT_NAME} ${sources})
 target_include_directories(${PROJECT_NAME} PUBLIC inc)
 
-target_include_directories(${PROJECT_NAME} PRIVATE ${RLBOT-BM_CPP_DIR}/inc ${RLBOT-BM_CPP_DIR}/lib/inc)
 target_include_directories(${PROJECT_NAME} PRIVATE ${RLUtilities_DIR}/inc ${RLUtilities_DIR}/inc/*)
 
 if (UNIX)
